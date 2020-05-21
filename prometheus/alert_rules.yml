@@ -1,0 +1,17 @@
+groups:
+- name: prometheus
+  rules:
+  - alert: UpPrometheus
+    expr: up{job="prometheus"} > 0
+    for: 2m
+    labels:
+      severity: error
+    annotations:
+      summary: Down Prometheus
+  - alert: UpThanosSidecar
+    expr: up{job="thanos_sidecar"} > 0
+    for: 1m
+    labels:
+      severity: error
+    annotations:
+      summary: Down Thanos Sidecar

@@ -1,0 +1,22 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+  external_labels:
+    monitor: '${ENV}_prometheus'
+
+rule_files:
+  - "alert.rules"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 30s
+    scrape_timeout: 20s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'thanos_sidecar'
+    scrape_interval: 30s
+    scrape_timeout: 20s
+    static_configs:
+      - targets: ['localhost:10902']

@@ -1,0 +1,45 @@
+version: '3'
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    prometheus_data: {}
+
+services:
+  prometheus:
+    build:
+      context: ./prometheus/
+      dockerfile: Dockerfile
+    container_name: prometheus
+    volumes:
+      - prometheus_data:/prometheus
+    expose:
+      - 9090
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-net
+    environment:
+      ENV: ${ENV:-default}
+
+  # thanos_sidecar:
+  #   build:
+  #     context: ./thanos_sidecar/
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - prometheus_data:/prometheus
+  #   container_name: "thanos_sidecar"
+  #   depends_on:
+  #     - prometheus
+  #   expose:
+  #     - 10091
+  #     - 10902
+  #   ports:
+  #     - "10091:10091"
+  #     - "10902:10902"
+  #   networks:
+  #     - monitor-net
+  #   environment:
+  #     ENV: ${ENV:-default}
