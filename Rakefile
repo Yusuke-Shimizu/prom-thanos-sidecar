@@ -52,4 +52,26 @@ namespace :docker do
         sh 'docker image ls'
         sh 'docker image ls | wc -l'
     end
+
+    desc 'Test using pytest'
+    task :test do
+        sh 'pytest -v --durations=10 --capture=no tests/unit/test_compose.py'
+    end
+end
+
+namespace :tool do
+    desc 'init'
+    task :init do
+        sh 'python3 -m venv .env'
+        puts 'source .env/bin/activate'
+        puts 'rake tool:pip'
+    end
+
+    desc 'Install package using pip'
+    task :pip do
+        sh 'pip list'
+        sh 'pip install --upgrade pip'
+        sh 'pip install -U -r requirements.txt'
+        sh 'pip list'
+    end
 end
